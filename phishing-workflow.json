@@ -1,0 +1,133 @@
+{
+  "name": "Phishing - Gemini → Frontend",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "phishing",
+        "respond": true,
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "none",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent",
+        "jsonParameters": true,
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "x-goog-api-key",
+              "value": "AIzaSyBnFxeOmR4yc60EI7lFgSWt2pondrLn7CA"
+            }
+          ]
+        },
+        "bodyParametersJson": "{\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"You are an assistant that must output valid JSON.\\nRead the incoming phishing report and return a JSON object with keys: status, summary, keywords (array), severity (low|medium|high), recommendations.\\nInput report:\\n{{$json}}\"\n        }\n      ]\n    }\n  ],\n  \"generationConfig\": {\n    \"responseMimeType\": \"application/json\"\n  }\n}",
+        "options": {}
+      },
+      "name": "Gemini Summarizer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [550, 300]
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "parsed_summary",
+              "value": "={{ $json[\"candidates\"] && $json[\"candidates\"][0] && $json[\"candidates\"][0][\"content\"] && $json[\"candidates\"][0][\"content\"][\"parts\"] ? $json[\"candidates\"][0][\"content\"][\"parts\"][0][\"text\"] : JSON.stringify($json) }} "
+            }
+          ]
+        }
+      },
+      "name": "Set Summary",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [800, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "none",
+        "requestMethod": "POST",
+        "url": "https://athirst-juelz-convivial.ngrok-free.dev/api/phishing",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"status\": \"summary_posted\",\n  \"source\": \"n8n-phishing\",\n  \"summary\": $json[\"parsed_summary\"],\n  \"original\": $json[\"Webhook\"]\n}"
+      },
+      "name": "POST to Frontend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [1050, 300]
+    },
+    {
+      "parameters": {
+        "responseData": "={\n  \"status\": \"ok\",\n  \"sent_to\": \"https://athirst-juelz-convivial.ngrok-free.dev/api/phishing\",\n  \"summary\": $json[\"parsed_summary\"]\n}"
+      },
+      "name": "Respond to Caller",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1300, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Gemini Summarizer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Summarizer": {
+      "main": [
+        [
+          {
+            "node": "Set Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Summary": {
+      "main": [
+        [
+          {
+            "node": "POST to Frontend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST to Frontend": {
+      "main": [
+        [
+          {
+            "node": "Respond to Caller",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "saveDataSuccessExecution": "none",
+    "saveManualExecutions": false
+  }
+}
