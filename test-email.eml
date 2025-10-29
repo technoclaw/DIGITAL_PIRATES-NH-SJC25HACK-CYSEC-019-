@@ -1,0 +1,21 @@
+$phishingEmail = @"
+From: security@paypal-security-verification.com
+To: user@gmail.com
+Subject: URGENT: Your PayPal Account Will Be Suspended
+Date: Wed, 28 Oct 2025 16:20:00 +0000
+
+URGENT SECURITY ALERT!
+
+We detected suspicious activity on your PayPal account. 
+Your account will be SUSPENDED within 24 hours unless you verify your identity.
+
+IMMEDIATE ACTION REQUIRED:
+Click here to verify: http://paypal-security-verification.com/secure-login
+
+This is your FINAL WARNING. Failure to act now will result in permanent account closure.
+
+Sincerely,
+PayPal Security Team
+"@
+
+Invoke-RestMethod -Uri "http://localhost:8080/email/process" -Method Post -Body $phishingEmail -ContentType "text/plain"

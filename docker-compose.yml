@@ -1,26 +1,45 @@
-version: '3.8'
-
 services:
-  pirates-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: digital-pirates
+  # n8n - Workflow automation (pre-built image)
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
     ports:
-      - "3000:3000"
+      - "5678:5678"
     environment:
-      - NODE_ENV=production
-      # Add your environment variables here
-      - N8N_DASHBOARD_WEBHOOK=${N8N_DASHBOARD_WEBHOOK}
-      - N8N_PHISHING_WEBHOOK=${N8N_PHISHING_WEBHOOK}
-      - N8N_LOGS_WEBHOOK=${N8N_LOGS_WEBHOOK}
-      - N8N_THREAT_INTEL_WEBHOOK=${N8N_THREAT_INTEL_WEBHOOK}
-      - N8N_API_KEY=${N8N_API_KEY}
-      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
-    restart: unless-stopped
-    networks:
-      - pirates-network
+      - N8N_HOST=localhost
+    volumes:
+      - n8n_data:/home/node/.n8n
 
-networks:
-  pirates-network:
-    driver: bridge
+  # Log Generator - Simulates applications producing logs
+  log-generator:
+    build: 
+      context: ./log-generator
+      dockerfile: Dockerfile
+    container_name: log-generator
+    volumes:
+      - ./shared-logs:/app/logs
+
+  # Log Analyzer - Processes logs and detects incidents
+  log-analyzer:
+    build: 
+      context: ./log-analyzer
+      dockerfile: Dockerfile
+    container_name: log-analyzer
+    volumes:
+      - ./shared-logs:/app/logs:ro
+    depends_on:
+      - n8n
+
+  # Incident Website - Dashboard for displaying incidents
+  incident-website:
+    build: 
+      context: ./incident-website
+      dockerfile: Dockerfile
+    container_name: incident-website
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./incident-website:/app
+
+volumes:
+  n8n_data:

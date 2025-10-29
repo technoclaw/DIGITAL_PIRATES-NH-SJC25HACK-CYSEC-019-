@@ -1,0 +1,118 @@
+{
+  "SECURITY_INCIDENT_REPORT": {
+    "report_id": "INC-20251029-cb33436b",
+    "generated_at": "2025-10-29T16:59:36.590210",
+    "report_version": "2.0",
+    "webhook_integration": {
+      "webhook_url": "http://localhost:8080/webhook/d66f1067",
+      "webhook_status": "ACTIVE",
+      "usage_instructions": "POST JSON data to this URL for real-time updates"
+    }
+  },
+  "INCIDENT_DETAILS": {
+    "date_time_detection": "October 29, 2025 at 16:59:36",
+    "reported_by": "Automated Security Monitoring System",
+    "incident_category": "Phishing Email Attempt",
+    "incident_severity": "LOW",
+    "incident_status": "Under Investigation"
+  },
+  "EMAIL_INFORMATION": {
+    "source": {
+      "sender_address": "test@test.com^&To",
+      "sender_domain": "test.com"
+    },
+    "destination": {
+      "recipient_address": "",
+      "department_affected": "Finance Department"
+    },
+    "message_details": {
+      "subject": "",
+      "message_id": ""
+    }
+  },
+  "THREAT_ASSESSMENT": {
+    "overall_risk_score": "0.0/10.0",
+    "threat_level": "LOW",
+    "color_indicator": "🟢 GREEN",
+    "disposition": "APPROVED",
+    "scoring_breakdown": {
+      "1.0-3.9": "🟢 GREEN - Low Risk (Approved)",
+      "4.0-5.9": "🟡 YELLOW - Medium Risk (Flagged)",
+      "6.0-10.0": "🟠 ORANGE - High Risk (Delivered to Spam)"
+    },
+    "category_scores": {
+      "domain_analysis": "0/10",
+      "content_analysis": "0/10",
+      "header_analysis": "0/10",
+      "attachment_analysis": "0/10",
+      "behavioral_analysis": "0/10"
+    }
+  },
+  "TECHNICAL_ANALYSIS": {
+    "smtp_relay_analysis": {
+      "source_ip": "192.168.89.123",
+      "reverse_dns": "mail.securemygateway.com",
+      "spf_result": "fail",
+      "dkim_result": "pass",
+      "dmarc_result": "fail"
+    },
+    "malware_scan_results": {
+      "malware_score": "0/10",
+      "engines_flagged": [],
+      "verdict": "CLEAN"
+    },
+    "phishing_analysis": {
+      "phishing_score": "0/10",
+      "detection_flags": [],
+      "brand_impersonation": "NOT_DETECTED"
+    },
+    "attachment_analysis": {
+      "total_attachments": 0,
+      "files_detected": [],
+      "risk_assessment": "LOW_RISK"
+    },
+    "SPAM_HEADERS_ADDED": {
+      "X-Spam-Flag": "YES",
+      "X-Spam-Score": "0.0",
+      "X-Spam-Status": "Yes",
+      "Precedence": "bulk",
+      "X-Priority": "5 (Lowest)",
+      "delivery_folder": "Inbox"
+    }
+  },
+  "WEBHOOK_INTEGRATION": {
+    "webhook_url": "http://localhost:8080/webhook/d66f1067",
+    "authentication": "None required",
+    "expected_payload": {
+      "action": "update_status|add_comment|resolve_incident",
+      "status": "investigating|resolved|false_positive",
+      "comments": "string",
+      "analyst": "string"
+    },
+    "example_curl": "curl -X POST http://localhost:8080/webhook/d66f1067 -H \"Content-Type: application/json\" -d '{\"action\": \"update_status\", \"status\": \"resolved\", \"analyst\": \"security_team\"}'"
+  },
+  "INCIDENT_RESPONSE": {
+    "immediate_actions_taken": [
+      "Email flagged for review",
+      "Webhook endpoint generated"
+    ]
+  },
+  "RECOMMENDATIONS": {
+    "immediate_actions": [
+      "Monitor webhook for incident updates",
+      "Review email content with security team",
+      "Block sender domain if confirmed malicious"
+    ],
+    "api_integration": [
+      "Use webhook URL for real-time updates: http://localhost:8080/webhook/d66f1067",
+      "Integrate with SIEM systems",
+      "Connect to incident management platforms"
+    ]
+  },
+  "ADDITIONAL_METADATA": {
+    "processing_duration": "3.2 seconds",
+    "scanner_version": "Webhook-Enabled v2.1.0",
+    "threat_intelligence_date": "October 28, 2025",
+    "api_documentation": "See WEBHOOK_INTEGRATION section for usage"
+  }
+}
