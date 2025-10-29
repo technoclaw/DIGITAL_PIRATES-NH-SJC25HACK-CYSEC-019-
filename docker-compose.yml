@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  pirates-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: digital-pirates
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      # Add your environment variables here
+      - N8N_DASHBOARD_WEBHOOK=${N8N_DASHBOARD_WEBHOOK}
+      - N8N_PHISHING_WEBHOOK=${N8N_PHISHING_WEBHOOK}
+      - N8N_LOGS_WEBHOOK=${N8N_LOGS_WEBHOOK}
+      - N8N_THREAT_INTEL_WEBHOOK=${N8N_THREAT_INTEL_WEBHOOK}
+      - N8N_API_KEY=${N8N_API_KEY}
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+    restart: unless-stopped
+    networks:
+      - pirates-network
+
+networks:
+  pirates-network:
+    driver: bridge

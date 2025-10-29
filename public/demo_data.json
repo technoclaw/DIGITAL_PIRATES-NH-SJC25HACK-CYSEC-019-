@@ -1,0 +1,162 @@
+{
+  "phishing": [
+    {
+      "id": "phish-001",
+      "subject": "Urgent: Reset Your Password",
+      "from": "security@bank-payments.com",
+      "body": "Your account will be locked. Click https://secure-reset.example.com to reset your password immediately.",
+      "label": "phishing",
+      "confidence": 0.97,
+      "response": "Do not click the link. Report to IT and block sender."
+    },
+    {
+      "id": "phish-002",
+      "subject": "Invoice Attached",
+      "from": "billing@accounts-pay.com",
+      "body": "Please see attached invoice and confirm payment.",
+      "label": "phishing",
+      "confidence": 0.91,
+      "response": "Do not open attachments. Verify the sender via phone."
+    },
+    {
+      "id": "phish-003",
+      "subject": "Team Calendar Invitation",
+      "from": "calendar-notices@example.com",
+      "body": "You have been invited to a meeting. Click the link to add to your calendar.",
+      "label": "suspicious",
+      "confidence": 0.65,
+      "response": "Check sender domain and meeting organizer before clicking."
+    },
+    {
+      "id": "phish-004",
+      "subject": "HR: Update Benefits Info",
+      "from": "hr@company.local",
+      "body": "Update your benefits details by logging into the portal.",
+      "label": "safe",
+      "confidence": 0.85,
+      "response": "Likely safe — confirm the sender is internal HR."
+    },
+    {
+      "id": "phish-005",
+      "subject": "Security Alert: Unusual sign-in",
+      "from": "alerts@microsoft-support.com",
+      "body": "We noticed a sign-in from a new device. Confirm your identity at https://account.example.com",
+      "label": "phishing",
+      "confidence": 0.94,
+      "response": "Do not follow the link. Visit the official site manually and check account activity."
+    }
+  ],
+  "cves": [
+    {
+      "id": "CVE-2025-1001",
+      "title": "Remote code execution in Acme WebServer",
+      "affected": "Acme WebServer <= 3.4.1",
+      "cvss": 9.8,
+      "summary": "A flaw allows remote attackers to execute arbitrary code via crafted headers.",
+      "recommended_action": "Apply vendor patch 3.4.2 or mitigate with WAF rule."
+    },
+    {
+      "id": "CVE-2025-1102",
+      "title": "Improper input validation in Acme Portal",
+      "affected": "Acme Portal 2.1",
+      "cvss": 7.4,
+      "summary": "Cross-site scripting vulnerability allowing stored XSS.",
+      "recommended_action": "Sanitize user input and update to 2.1.3."
+    },
+    {
+      "id": "CVE-2025-1203",
+      "title": "Privilege escalation in Linux kernel module xyz",
+      "affected": "Linux kernel 5.10.x",
+      "cvss": 8.6,
+      "summary": "Local users can escalate privileges by exploiting race condition.",
+      "recommended_action": "Upgrade kernel to patched release and audit local processes."
+    },
+    {
+      "id": "CVE-2025-1304",
+      "title": "Information disclosure in FTP server",
+      "affected": "OpenFTP 1.2",
+      "cvss": 5.3,
+      "summary": "Server may leak directory listings under certain configurations.",
+      "recommended_action": "Disable anonymous access and update configuration."
+    },
+    {
+      "id": "CVE-2025-1405",
+      "title": "Denial of Service in GraphDB",
+      "affected": "GraphDB 4.x",
+      "cvss": 6.9,
+      "summary": "A crafted query can cause memory exhaustion.",
+      "recommended_action": "Apply throttling and update to latest patch."
+    }
+  ],
+  "logs": [
+    {
+      "id": "log-001",
+      "summary": "Multiple failed login attempts from 192.168.1.10 on host web-01",
+      "severity": "High",
+      "host": "web-01",
+      "ip": "192.168.1.10",
+      "timestamp": "2025-10-11T03:13:00Z"
+    },
+    {
+      "id": "log-002",
+      "summary": "Reconnaissance scan from 10.0.0.24 (nmap detected)",
+      "severity": "Medium",
+      "host": "edge-02",
+      "ip": "10.0.0.24",
+      "timestamp": "2025-10-11T01:43:00Z"
+    },
+    {
+      "id": "log-003",
+      "summary": "SQL injection pattern observed against db-01",
+      "severity": "High",
+      "host": "db-01",
+      "ip": "172.16.0.50",
+      "timestamp": "2025-10-10T22:03:00Z"
+    },
+    {
+      "id": "log-004",
+      "summary": "sudo privilege escalation attempt",
+      "severity": "Low",
+      "host": "srv-07",
+      "ip": "10.1.2.33",
+      "timestamp": "2025-10-10T19:30:00Z"
+    },
+    {
+      "id": "log-005",
+      "summary": "Root login detected",
+      "severity": "Medium",
+      "host": "core-01",
+      "ip": "10.2.2.2",
+      "timestamp": "2025-10-10T17:02:00Z"
+    }
+  ],
+  "policies": [
+    { "id": "pol-001", "title": "Access Control Policy", "status": "warn" },
+    { "id": "pol-002", "title": "Incident Response Policy", "status": "pass" }
+  ],
+  "notifications": [
+    {
+      "id": "note-001",
+      "title": "Critical: Phishing detected (phish-001)",
+      "body": "Phishing email detected from security@bank-payments.com. Confidence 97%. Recommended: Block sender and advise users not to click links.",
+      "severity": "Critical",
+      "link": "/phishing/phish-001",
+      "timestamp": "2025-10-11T03:15:00Z",
+      "read": false
+    },
+    {
+      "id": "note-002",
+      "title": "High: Log anomaly found (log-001)",
+      "body": "Multiple failed login attempts from 192.168.1.10 on host web-01. Recommended action: block IP and investigate.",
+      "severity": "High",
+      "link": "/logs/log-001",
+      "timestamp": "2025-10-11T03:13:00Z",
+      "read": false
+    }
+  ],
+  "sampleLogs": {
+    "Auth failures": "Oct 10 10:00:01 web-01 sshd[1111]: Failed login for user root from 192.168.1.10\nOct 10 10:00:20 web-01 sshd[1112]: Authentication failure from 192.168.1.10\nOct 10 10:01:05 web-01 sshd[1113]: Failed login for user admin from 192.168.1.10\nOct 10 10:02:15 web-01 sshd[1114]: Failed login for user admin from 192.168.1.10",
+    "Recon": "Oct 10 11:00:01 edge-02 kernel: nmap scan detected from 10.0.0.24 ports 1-1024",
+    "SQL injection": "Oct 10 12:00:01 db-01 app: suspicious query: 'UNION SELECT password FROM users' from 172.16.0.50"
+  }
+}
